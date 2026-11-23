@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ktor-users-db
+    environment:
+      POSTGRES_DB: ktor_users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ktor_users"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: ktor-users-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      JDBC_DATABASE_URL: jdbc:postgresql://db:5432/ktor_users
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: ${JWT_SECRET:-replace-this-with-a-long-random-secret}
+      JWT_ISSUER: ktor-users-api
+      JWT_AUDIENCE: ktor-users-client
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
