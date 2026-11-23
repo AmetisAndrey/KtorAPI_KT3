@@ -67,18 +67,6 @@ src/main/resources/openapi.yaml
 src/test/kotlin/com/example/ApplicationTest.kt
 ```
 
-## Публикация в GitHub
-Создай пустой репозиторий на GitHub, затем выполни в корне проекта:
-```bash
-git init
-git add .
-git commit -m "Initial Ktor Users API"
-git branch -M main
-git remote add origin https://github.com/ВАШ_ЛОГИН/ktor-users-api.git
-git push -u origin main
-```
-Замени URL на адрес своего репозитория.
-
 ## Примечание
 Хранилище пользователей работает в памяти процесса, поэтому данные сбрасываются
 при перезапуске. Для production следует подключить базу данных.
